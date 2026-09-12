@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automação para Lanchonetes - Demonstração Interativa</title>
+    <!-- Tailwind CSS para um design moderno e rápido -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .whatsapp-bg {
+            background-color: #efeae2;
+            background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+        }
+        /* Efeito de digitação */
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            float: left;
+            margin: 0 1px;
+            background-color: #90949c;
+            border-radius: 50%;
+            opacity: 0;
+            animation: bounce 1.3s infinite;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: 0s; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-4px); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+
+    <!-- HEADER / HERO SECTION -->
+    <header class="container mx-auto px-4 py-12 text-center max-w-4xl">
+        <span class="bg-green-500 text-gray-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Demonstração Interativa</span>
+        <h1 class="text-4xl md:text-6xl font-extrabold mt-6 leading-tight">
+            Transforme seu WhatsApp em uma <span class="text-green-400">Máquina de Vendas</span> 24h
+        </h1>
+        <p class="text-gray-400 text-lg md:text-xl mt-6 max-w-2xl mx-auto">
+            Simule o atendimento de um cliente abaixo. Veja como o robô anota o pedido e fecha a venda em segundos, sem você digitar uma única palavra.
+        </p>
+        <div class="mt-4 flex justify-center items-center gap-2 text-yellow-500">
+            <i class="fas fa-arrow-down animate-bounce text-2xl"></i>
+            <span class="font-semibold text-sm">CLIQUE NOS BOTÕES DO CHAT ABAIXO PARA TESTAR</span>
+        </div>
+    </header>
+
+    <!-- SIMULADOR WHATSAPP -->
+    <main class="container mx-auto px-4 pb-20 flex justify-center">
+        <div class="w-full max-w-md bg-zinc-800 rounded-3xl p-4 shadow-2xl border-4 border-zinc-700">
+            <!-- Tela do Celular -->
+            <div class="rounded-2xl overflow-hidden shadow-inner flex flex-col h-[600px] bg-zinc-900 relative">
+                
+                <!-- Topo do WhatsApp -->
+                <div class="bg-[#075e54] p-3 flex items-center justify-between text-white">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-arrow-left cursor-pointer"></i>
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=100&auto=format&fit=crop&q=60" alt="Lanchonete Sabor na Hora" class="w-10 h-10 rounded-full object-cover border border-white/20">
+                            <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#075e54] rounded-full"></span>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm">Sabor na Hora 🍔</h3>
+                            <span class="text-xs text-green-200">Online (Bot Ativo)</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 text-sm opacity-80">
+                        <i class="fas fa-video"></i>
+                        <i class="fas fa-phone"></i>
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+
+                <!-- Corpo do Chat (Mensagens) -->
+                <div id="chat-body" class="flex-1 overflow-y-auto p-4 space-y-4 whatsapp-bg flex flex-col">
+                    <!-- As mensagens serão inseridas aqui via JavaScript -->
+                </div>
+
+                <!-- Indicador de "Digitando..." -->
+                <div id="typing" class="absolute bottom-24 left-4 bg-white text-gray-800 px-3 py-2 rounded-2xl rounded-tl-none shadow-md hidden flex items-center gap-2">
+                    <span class="text-xs font-semibold text-gray-500">Sabor na Hora está digitando</span>
+                    <div class="typing-indicator flex items-center">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+
+                <!-- Área de Opções / Botões do Robô (Reply Buttons) -->
+                <div id="action-area" class="bg-white/95 p-3 border-t border-gray-200 flex flex-col gap-2 transition-all duration-300">
+                    <!-- Os botões interativos aparecerão aqui -->
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- SEÇÃO BENEFÍCIOS PARA O CLIENTE -->
+    <section class="bg-zinc-800 py-16">
+        <div class="container mx-auto px-4 max-w-5xl text-center">
+            <h2 class="text-3xl font-bold mb-12">Por que sua Lanchonete precisa disso?</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-zinc-900 p-6 rounded-2xl border border-zinc-700">
+                    <div class="text-green-400 text-3xl mb-4"><i class="fas fa-bolt"></i></div>
+                    <h3 class="text-xl font-semibold mb-2">Atendimento Imediato</h3>
+                    <p class="text-gray-400 text-sm">Sem deixar cliente esperando na sexta-feira à noite. Resposta em menos de 2 segundos.</p>
+                </div>
+                <div class="bg-zinc-900 p-6 rounded-2xl border border-zinc-700">
+                    <div class="text-green-400 text-3xl mb-4"><i class="fas fa-dollar-sign"></i></div>
+                    <h3 class="text-xl font-semibold mb-2">Aumento de Vendas</h3>
+                    <p class="text-gray-400 text-sm">O robô oferece combos extras e não esquece de perguntar a forma de pagamento.</p>
+                </div>
+                <div class="bg-zinc-900 p-6 rounded-2xl border border-zinc-700">
+                    <div class="text-green-400 text-3xl mb-4"><i class="fas fa-clock"></i></div>
+                    <h3 class="text-xl font-semibold mb-2">Funciona 24h/7</h3>
+                    <p class="text-gray-400 text-sm">Receba pedidos mesmo de madrugada ou quando a sua equipe estiver ocupada na cozinha.</p>
+                </div>
+            </div>
+
+            <!-- CTA Final -->
+            <div class="mt-16 bg-gradient-to-r from-green-600 to-emerald-700 p-8 rounded-3xl max-w-3xl mx-auto shadow-xl">
+                <h3 class="text-2xl md:text-3xl font-extrabold mb-4">Quer um sistema desse no seu WhatsApp?</h3>
+                <p class="text-white/90 mb-6">Desenvolvemos o robô com o seu cardápio, sua logo e suas taxas de entrega.</p>
+                <a href="https://wa.me/55XXXXXXXXXXX?text=Quero%20saber%20mais%20sobre%20o%20bot%20para%20minha%20lanchonete" target="_blank" class="inline-flex items-center gap-2 bg-white text-gray-900 font-bold px-8 py-4 rounded-full shadow-lg hover:bg-gray-100 transition duration-300 text-lg">
+                    <i class="fab fa-whatsapp text-2xl text-green-500"></i> Falar com Especialista Agora
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-zinc-950 py-8 text-center text-gray-500 text-sm">
+        <p>© <span id="year"></span> Seu Nome/Sua Empresa - Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- LÓGICA DO CHATBOT INTERATIVO -->
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        const chatBody = document.getElementById('chat-body');
+        const actionArea = document.getElementById('action-area');
+        const typingIndicator = document.getElementById('typing');
+
+        // Seu link de vendas do WhatsApp (Substitua pelo seu número)
+        const SEU_WHATSAPP_LINK = "https://wa.me/55XXXXXXXXXXX?text=Vi%20a%20demo%20da%20lanchonete%20e%20quero%20um%20robô%20igual";
+
+        // Formata o texto para simular o estilo do WhatsApp (negrito e emojis)
+        function formatWhatsAppText(text) {
+            return text
+                .replace(/\*(.*?)\*/g, '<strong>$1</strong>')
+                .replace(/\n/g, '<br>');
+        }
+
+        // Função para simular o envio de mensagem do cliente
+        function appendUserMessage(text) {
+            const msgHtml = `
+                <div class="bg-[#d9fdd3] text-gray-800 p-3 rounded-2xl rounded-tr-none self-end max-w-[80%] shadow-sm text-sm">
+                    <p>${text}</p>
+                    <span class="text-[10px] text-gray-500 block text-right mt-1">${getCurrentTime()}</span>
+                </div>
+            `;
+            chatBody.innerHTML += msgHtml;
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        // Função para simular a resposta do Bot com delay de digitação
+        function appendBotMessage(text, buttons = []) {
+            typingIndicator.classList.remove('hidden');
+            actionArea.innerHTML = ''; // Limpa botões antigos durante a digitação
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            setTimeout(() => {
+                typingIndicator.classList.add('hidden');
+                
+                const msgHtml = `
+                    <div class="bg-white text-gray-800 p-3 rounded-2xl rounded-tl-none self-start max-w-[80%] shadow-sm text-sm">
+                        <p>${formatWhatsAppText(text)}</p>
+                        <span class="text-[10px] text-gray-400 block text-right mt-1">${getCurrentTime()}</span>
+                    </div>
+                `;
+                chatBody.innerHTML += msgHtml;
+                chatBody.scrollTop = chatBody.scrollHeight;
+
+                // Renderiza novos botões
+                renderButtons(buttons);
+            }, 1500); // 1.5 segundos de digitação simulada
+        }
+
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Renderiza os botões do WhatsApp
+        function renderButtons(buttons) {
+            actionArea.innerHTML = '';
+            
+            if (buttons.length === 0) return;
+
+            buttons.forEach(btn => {
+                const buttonElement = document.createElement('button');
+                buttonElement.className = "w-full bg-[#e1f3fd] hover:bg-[#d1ecfc] text-[#00a5f4] font-semibold py-2.5 px-4 rounded-xl text-sm transition duration-200 border border-[#b2e3fc] shadow-sm";
+                buttonElement.innerText = btn.text;
+                buttonElement.onclick = () => handleButtonClick(btn.action, btn.text);
+                actionArea.appendChild(buttonElement);
+            });
+        }
+
+        // Fluxo do Robô baseado no seu Script
+        function startBot() {
+            chatBody.innerHTML = ''; // Limpa o chat
+            appendBotMessage(
+                "😋 *Muita fome aqui!*\n\nOlá! Acabei de chegar na *Lanchonete Sabor na Hora*!\n\nO que você deseja?",
+                [
+                    { text: "📖 Ver Cardápio", action: "cardapio" },
+                    { text: "🛍️ Fazer Pedido", action: "fazer_pedido" },
+                    { text: "👤 Falar com Atendente", action: "falar_atendente" }
+                ]
+            );
+        }
+
+        function handleButtonClick(action, btnText) {
+            appendUserMessage(btnText);
+
+            switch (action) {
+                case "cardapio":
+                    appendBotMessage(
+                        "🍔 Nosso cardápio de hoje tem:\n\n• Combo X-Salada + Batata + Refri por R$ 39,90\n• Combo Duplo Cheddar + Batata + Refri por R$ 45,90\n\nDeseja montar seu pedido?",
+                        [
+                            { text: "🛍️ Fazer Pedido", action: "fazer_pedido" },
+                            { text: "↩️ Voltar ao Menu", action: "inicio" }
+                        ]
+                    );
+                    break;
+                case "falar_atendente":
+                    appendBotMessage(
+                        "👤 Entendido! Um de nossos atendentes humanos já foi notificado. Enquanto isso, gostaria de tentar fazer o pedido de forma rápida por aqui?",
+                        [
+                            { text: "🛍️ Fazer Pedido", action: "fazer_pedido" },
+                            { text: "↩️ Voltar ao Menu", action: "inicio" }
+                        ]
+                    );
+                    break;
+                case "inicio":
+                    startBot();
+                    break;
+                case "fazer_pedido":
+                    appendBotMessage(
+                        "😋 *Perfeito! Vamos fazer seu pedido.*\n\nEscolha um combo:",
+                        [
+                            { text: "🍔 Combo X-Salada + Batata + Refri", action: "confirmar_pedido" },
+                            { text: "↩️ Voltar ao Menu", action: "inicio" }
+                        ]
+                    );
+                    break;
+                case "confirmar_pedido":
+                    appendBotMessage(
+                        "🛒 *Pedido confirmado!*\n\n1x Combo X-Salada + Batata + Refri\n\n*Total: R$ 39,90*\n\n💳 *Como deseja pagar?*",
+                        [
+                            { text: "💵 Dinheiro", action: "pagamento_concluido" },
+                            { text: "📱 Pix", action: "pagamento_concluido" },
+                            { text: "💳 Cartão", action: "pagamento_concluido" }
+                        ]
+                    );
+                    break;
+                case "pagamento_concluido":
+                    appendBotMessage(
+                        "✅ *Pedido finalizado com sucesso!*\n\nGostou de como o robô tirou o pedido em segundos? O seu negócio pode vender assim 24h. Quer falar com nosso especialista para criar o seu?",
+                        [
+                            { text: "🚀 Quero falar com o especialista", action: "falar_especialista" },
+                            { text: "🔄 Testar Novamente", action: "inicio" }
+                        ]
+                    );
+                    break;
+                case "falar_especialista":
+                    window.open(SEU_WHATSAPP_LINK, '_blank');
+                    // Reinicia após abrir o link para o cliente poder testar de novo
+                    setTimeout(() => { startBot(); }, 2000);
+                    break;
+            }
+        }
+
+        // Inicia o bot automaticamente ao carregar a página
+        window.onload = () => {
+            startBot();
+        };
+    </script>
+</body>
+</html>
